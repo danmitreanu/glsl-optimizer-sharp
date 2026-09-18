@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.50)
 project(glsl-optimizer)
 
+set(CMAKE_BUILD_TYPE Release CACHE STRING "" FORCE)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 file(GLOB glcpp-library_sources glsl-optimizer/src/glsl/glcpp/*.c glsl-optimizer/src/util/*.c)
 add_library(glcpp-library STATIC ${glcpp-library_sources})
 target_include_directories(glcpp-library PUBLIC glsl-optimizer/include)
