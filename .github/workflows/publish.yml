@@ -1,0 +1,83 @@
+name: Publish to NuGet
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Package version, e.g. 1.0.0 or 1.1.0-preview1'
+        required: true
+        type: string
+      dry_run:
+        description: 'Pack and verify only, do not push to nuget.org'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  PROJECT: DanM.GlslOptimizer/DanM.GlslOptimizer.csproj
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Pack
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          dotnet pack "$PROJECT" -c Release \
+            -p:PackageVersion="$VERSION" \
+            -p:ContinuousIntegrationBuild=true \
+            -o artifacts
+
+      # The native libs must land at exactly runtimes/{rid}/native/{file}. A wrong
+      # PackagePath still packs and still compiles for consumers, but fails at
+      # runtime with DllNotFoundException -- and a published version cannot be
+      # replaced on nuget.org. So verify before pushing, not after.
+      - name: Verify native assets
+        run: |
+          NUPKG=$(ls artifacts/*.nupkg)
+          echo "Inspecting $NUPKG"
+          unzip -l "$NUPKG"
+          MISSING=0
+          for PATH_IN_PKG in \
+            runtimes/linux-x64/native/libglslopt_dll.so \
+            runtimes/linux-arm64/native/libglslopt_dll.so \
+            runtimes/osx-x64/native/libglslopt_dll.dylib \
+            runtimes/osx-arm64/native/libglslopt_dll.dylib \
+            runtimes/win-x64/native/glslopt_dll.dll ; do
+            if unzip -l "$NUPKG" | grep -qF " $PATH_IN_PKG"; then
+              echo "ok      $PATH_IN_PKG"
+            else
+              echo "::error::missing $PATH_IN_PKG"
+              MISSING=1
+            fi
+          done
+          exit $MISSING
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nupkg-${{ inputs.version }}
+          path: artifacts/*
+
+      - name: Push to nuget.org
+        if: inputs.dry_run != true
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "::error::Secret NUGET_API_KEY is not set on this repository."
+            exit 1
+          fi
+          dotnet nuget push artifacts/*.nupkg \
+            --api-key "$NUGET_API_KEY" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate

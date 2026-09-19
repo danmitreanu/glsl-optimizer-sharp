@@ -12,12 +12,22 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
-    <Description>
-      Managed .NET wrapper around https://github.com/aras-p/glsl-optimizer.
-    </Description>
+    <Description>Managed .NET wrapper around https://github.com/aras-p/glsl-optimizer. Targets OpenGL, OpenGL ES 2.0/3.0 and Metal. Native binaries for win-x64, linux-x64, linux-arm64, osx-x64 and osx-arm64 are included in the package.</Description>
+    <PackageTags>glsl;shader;optimizer;opengl;opengles;metal;graphics;native</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/danmitreanu/glsl-optimizer-sharp</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="/" Visible="false" />
+    <!-- Shipped alongside the SPDX expression so the upstream glsl-optimizer
+         copyright notice travels with the native binaries, as MIT requires. -->
+    <None Include="../LICENSE" Pack="true" PackagePath="/" Visible="false" />
     <None Include="../bin/**/*"
       Pack="true"
       PackagePath="runtimes/%(RecursiveDir)native/%(Filename)%(Extension)"

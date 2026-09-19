@@ -3,3 +3,4 @@
 **/obj/
 build_*/
 **/.DS_Store
+artifacts/
