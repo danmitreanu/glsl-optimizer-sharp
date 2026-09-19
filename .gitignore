@@ -1,2 +1,5 @@
+.vscode/
+**/bin/
+**/obj/
 build_*/
 **/.DS_Store

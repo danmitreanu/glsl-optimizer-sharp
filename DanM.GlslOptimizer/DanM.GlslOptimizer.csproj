@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../bin/**/*"
+      Pack="true"
+      PackagePath="runtimes/%(RecursiveDir)native/%(Filename)%(Extension)"
+      CopyToOutputDirectory="Never"
+      Visible="false" />
+  </ItemGroup>
+
+</Project>
