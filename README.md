@@ -42,14 +42,11 @@ void main ()
 `GlslOptimizerContext` and `OptimizedShader` both own native handles, so dispose them
 (`using`) rather than leaving them to the finalizer.
 
-### Targets
+## How it works
 
-`GlslTarget` selects the output dialect: `OpenGL`, `OpenGLES20`, `OpenGLES30` or `Metal`.
+[`aras-p/glsl-optimizer`](https://github.com/aras-p/glsl-optimizer) was taken and its `CMakeLists.txt` stripped to only build the static library. `glsl_optimizer` is linked to `glslopt_dll`, the dynamic library shipped with this project. The .NET library P/Invokes into that.
 
-### Options
-
-`GlslOptimizeOptions` is a flags enum: `SkipPreprocessor` to leave `#` directives alone,
-`NotFullShader` to optimize a fragment of a shader rather than a complete one.
+The dynamic library's code is in `src/`. The stripped `CMakeLists.txt` is in the root of the repo.
 
 ## Supported platforms
 
@@ -62,6 +59,10 @@ void main ()
 | `osx-arm64`   | `libglslopt_dll.dylib` |
 
 There is currently no `win-arm64` binary.
+
+## AI disclosure
+
+AI (Opus 5) was used write the NuGet publishing pipeline (GitHub Actions and some .csproj editing), parts of this README, and the `interface.h` DLL_EXPORT define.
 
 ## License
 

@@ -30,9 +30,6 @@
 
 GLSLOPT_EXTERN_C_BEGIN
 
-// Example:
-// DLL_EXPORT int glslopt_example(int value);
-
 DLL_EXPORT void* glslopt_initialize_(int target);
 DLL_EXPORT void glslopt_cleanup_(void* ctx);
 DLL_EXPORT void* glslopt_optimize_(void* ctx, int shaderType, const char* shaderSource, unsigned int options);
