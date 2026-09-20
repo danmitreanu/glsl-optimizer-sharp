@@ -4,3 +4,5 @@
 build_*/
 **/.DS_Store
 artifacts/
+
+DanM.GlslOptimizer.Test/packages/
