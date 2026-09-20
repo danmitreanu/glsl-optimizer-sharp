@@ -1,5 +1,8 @@
 # DanM.GlslOptimizer
 
+[![NuGet](https://img.shields.io/nuget/v/DanM.GlslOptimizer.svg)](https://www.nuget.org/packages/DanM.GlslOptimizer)
+[![Downloads](https://img.shields.io/nuget/dt/DanM.GlslOptimizer.svg)](https://www.nuget.org/packages/DanM.GlslOptimizer)
+
 .NET bindings for [glsl-optimizer](https://github.com/aras-p/glsl-optimizer), the GLSL
 optimizing compiler originally from Mesa and maintained by Unity. Native binaries for
 Windows, Linux and macOS ship inside the package, so there is nothing to build or install
