@@ -3,7 +3,7 @@
 # The registration is lost when the VM restarts, so the build scripts call this every time.
 
 $status = docker run --privileged --rm tonistiigi/binfmt | ConvertFrom-Json
-if ($status.emulators -notcontains 'qemu-aarch64') {
+if ($status.supported -notcontains 'linux/arm64') {
 	docker run --privileged --rm tonistiigi/binfmt --install arm64
 	if ($LASTEXITCODE -ne 0) { throw 'Failed to register arm64 emulation' }
 }
