@@ -1,0 +1,21 @@
+#version 150 core
+
+in vec3 Pos;
+in vec2 UV;
+in uint BlockFace;
+in uint Block;
+
+out vec4 color;
+
+uniform mat4 Model;
+uniform mat4 View;
+uniform mat4 Proj;
+
+void main()
+{
+    mat4 mvp = Proj * View * Model;
+    gl_Position = mvp * vec4(Pos, 1.0);
+    float c = (UV.x + UV.y) / 2.0 * mix(0.5, 1, Block * 1.0);
+    color = vec4(c, c, c, 1.0);
+}
+
