@@ -4,7 +4,7 @@ cd /source
 
 cmake -G "Unix Makefiles" -B/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS=-fno-strict-aliasing -DCMAKE_CXX_FLAGS=-fno-strict-aliasing
 cd /build
-cmake --build . --target glslopt_dll
+cmake --build . --target glslopt_dll -- -j 8
 
 mkdir -p /output/linux-arm64
 cp libglslopt_dll.so /output/linux-arm64/
